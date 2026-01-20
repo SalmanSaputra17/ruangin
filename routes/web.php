@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('rooms', RoomController::class)->except('show');
-    //    Route::resource('facilities', FacilityController::class)->except('show');
+    Route::resource('facilities', FacilityController::class)->except('show');
 });
 
 require __DIR__ . '/auth.php';
