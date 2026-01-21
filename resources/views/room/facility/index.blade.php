@@ -9,13 +9,21 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <a href="{{ route('rooms.index') }}" class="secondary-btn mb-4">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </a>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900">
-                        {{ __('Rooms List') }}
+                        {{ __('Facilities of ' . $room->name . " - " . $room->location . ".") }}
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-600">
-                        {{ __("List of rooms available.") }}
+                        {{ __("List of facilities in " . $room->name . " - " . $room->location . ".") }}
                     </p>
                 </header>
                 @if (session('success'))
@@ -24,14 +32,14 @@
                 <div
                     class="relative mt-4 overflow-x-auto shadow-xs rounded-lg border border-default">
                     <div class="p-4 flex items-center justify-between gap-4 flex-wrap md:flex-nowrap bg-gray-50">
-                        <a href="{{ route('rooms.create') }}" class="primary-btn">
+                        <a href="{{ route('rooms.facilities.create', $room) }}" class="primary-btn">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                             </svg>
-                            &nbsp;Create Room
+                            &nbsp;Add Facilities
                         </a>
                         <div class="w-full md:w-[240px] lg:w-[280px] relative">
-                            <form method="get" action="{{ route('rooms.index') }}">
+                            <form method="get" action="{{ route('rooms.facilities.index', $room) }}">
                                 <label for="input-group-1" class="sr-only">Search</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -44,7 +52,7 @@
                                     </div>
                                     <input type="text" id="input-group-1" name="search" value="{{ request('search') }}"
                                            class="block w-full ps-9 pe-3 py-2 bg-white border border-gray-200 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-                                           placeholder="Search room name...">
+                                           placeholder="Search room facility name...">
                                 </div>
                             </form>
                         </div>
@@ -59,13 +67,7 @@
                                 Name
                             </th>
                             <th scope="col" class="p-4">
-                                Location
-                            </th>
-                            <th scope="col" class="p-4">
-                                Capacity
-                            </th>
-                            <th scope="col" class="p-4">
-                                Status
+                                Description
                             </th>
                             <th scope="col" class="p-4">
                                 Action
@@ -73,47 +75,25 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($rooms as $room)
+                        @foreach($facilities as $facility)
                             <tr class="{{ !$loop->last ? 'border-b' : '' }} border-default {{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
                                 <td class="p-4 align-top">
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="p-4 align-top">
-                                    <span class="block mb-2 font-extrabold">{{ $room->name }}</span>
-                                    <p>{{ Str::limit($room->description, 50) }}</p>
+                                    {{ $facility->name }}
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ $room->location }}
-                                </td>
-                                <td class="p-4 align-top">
-                                    {{ $room->capacity }} People
-                                </td>
-                                <td class="p-4 align-top">
-                                    {{ $room->is_active ? 'Active' : 'Inactive' }}
+                                    {{ Str::limit($facility->description, 50) }}
                                 </td>
                                 <td class="p-4 align-top">
                                     <div class="inline-flex gap-2">
-                                        <a href="{{ route('rooms.facilities.index', $room) }}" class="indigo-btn">
-                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                                 stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                      d="M3 21h18M5 21V7l8-4 6 3v15M9 21v-4h6v4"/>
-                                            </svg>
-                                            Facilities
-                                        </a>
-                                        <a href="{{ route('rooms.edit', $room) }}" class="yellow-btn">
-                                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                 stroke-width="2">
-                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                                <path d="M18.5 2.5a2.12 2.12 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                            </svg>
-                                            Edit
-                                        </a>
-                                        <form method="post" action="{{ route('rooms.destroy', $room) }}">
+                                        <form method="post"
+                                              action="{{ route('rooms.facilities.destroy', [$room, $facility]) }}">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="red-btn"
-                                                    onclick="return confirm('Are you sure want to delete this room?');">
+                                                    onclick="return confirm('Are you sure want to delete this facility?');">
                                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                                                      stroke="currentColor"
                                                      stroke-width="2">
@@ -138,15 +118,15 @@
                         <span class="text-sm text-gray-600 w-full md:w-auto text-center md:text-left">
                             Showing
                             <span class="font-semibold text-gray-900">
-                                {{ $rooms->firstItem() }}–{{ $rooms->lastItem() }}
+                                {{ $facilities->firstItem() }}–{{ $facilities->lastItem() }}
                             </span>
                             of
                             <span class="font-semibold text-gray-900">
-                                {{ $rooms->total() }}
+                                {{ $facilities->total() }}
                             </span>
                         </span>
                         <div class="mx-auto md:mx-0">
-                            {{ $rooms->links() }}
+                            {{ $facilities->links() }}
                         </div>
                     </nav>
                 </div>

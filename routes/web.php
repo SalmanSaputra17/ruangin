@@ -4,6 +4,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomFacilityController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,8 +26,17 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Rooms Routes
     Route::resource('rooms', RoomController::class)->except('show');
+    // Facilities Routes
     Route::resource('facilities', FacilityController::class)->except('show');
+    // Room Facilities Routes
+    Route::get('/rooms/{room}/facilities', [RoomFacilityController::class, 'index'])->name('rooms.facilities.index');
+    Route::get('/rooms/{room}/facilities/create',
+        [RoomFacilityController::class, 'create'])->name('rooms.facilities.create');
+    Route::post('/rooms/{room}/facilities', [RoomFacilityController::class, 'store'])->name('rooms.facilities.store');
+    Route::delete('/rooms/{room}/facilities/{facility}',
+        [RoomFacilityController::class, 'destroy'])->name('rooms.facilities.destroy');
 });
 
 require __DIR__ . '/auth.php';
