@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static findOrFail(mixed $room_id)
+ * @method static orderBy(string $string)
+ */
 class Room extends Model
 {
     use softDeletes;

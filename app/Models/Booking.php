@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static create(array $array)
+ */
 class Booking extends Model
 {
     use softDeletes;
@@ -20,6 +23,10 @@ class Booking extends Model
         'description',
         'start_time',
         'end_time',
+        'status',
+        'is_override',
+        'override_reason',
+        'approved_by',
     ];
 
     /**

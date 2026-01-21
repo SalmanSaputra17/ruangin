@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Booking Routes
-    //    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::resource('bookings', BookingController::class)->except('show', 'edit', 'update', 'destroy');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

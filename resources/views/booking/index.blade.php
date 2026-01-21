@@ -2,21 +2,20 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Rooms') }}
+            {{ __('Bookings') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <x-back-button class="mb-4"></x-back-button>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900">
-                        {{ __('Facilities of ' . $room->name . " - " . $room->location . ".") }}
+                        {{ __('Booking List') }}
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-600">
-                        {{ __("List of facilities in " . $room->name . " - " . $room->location . ".") }}
+                        {{ __("List of all bookings.") }}
                     </p>
                 </header>
                 @if (session('success'))
@@ -25,14 +24,14 @@
                 <div
                     class="relative mt-4 overflow-x-auto shadow-xs rounded-lg border border-default">
                     <div class="p-4 flex items-center justify-between gap-4 flex-wrap md:flex-nowrap bg-gray-50">
-                        <a href="{{ route('rooms.facilities.create', $room) }}" class="primary-btn">
+                        <a href="{{ route('bookings.create') }}" class="primary-btn">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                             </svg>
-                            &nbsp;Add Facilities
+                            &nbsp;Book a Room
                         </a>
                         <div class="w-full md:w-[240px] lg:w-[280px] relative">
-                            <form method="get" action="{{ route('rooms.facilities.index', $room) }}">
+                            <form method="get" action="{{ route('bookings.index') }}">
                                 <label for="input-group-1" class="sr-only">Search</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -45,7 +44,7 @@
                                     </div>
                                     <input type="text" id="input-group-1" name="search" value="{{ request('search') }}"
                                            class="block w-full ps-9 pe-3 py-2 bg-white border border-gray-200 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
-                                           placeholder="Search room facility name...">
+                                           placeholder="Search booking ...">
                                 </div>
                             </form>
                         </div>
@@ -57,49 +56,54 @@
                                 No.
                             </th>
                             <th scope="col" class="p-4">
-                                Name
+                                Room
                             </th>
                             <th scope="col" class="p-4">
-                                Description
+                                Title
                             </th>
                             <th scope="col" class="p-4">
-                                Action
+                                Start Time
+                            </th>
+                            <th scope="col" class="p-4">
+                                End Time
+                            </th>
+                            <th scope="col" class="p-4">
+                                Status
+                            </th>
+                            <th scope="col" class="p-4">
+                                Information
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($facilities as $facility)
+                        @foreach($bookings as $booking)
                             <tr class="{{ !$loop->last ? 'border-b' : '' }} border-default {{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
                                 <td class="p-4 align-top">
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ $facility->name }}
+                                    {{ $booking->room->name }}
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ Str::limit($facility->description, 50) }}
+                                    <span class="block mb-2 font-extrabold">{{ $booking->title }}</span>
+                                    <p>{{ Str::limit($booking->description, 75) }}</p>
                                 </td>
                                 <td class="p-4 align-top">
-                                    <div class="inline-flex gap-2">
-                                        <form method="post"
-                                              action="{{ route('rooms.facilities.destroy', [$room, $facility]) }}">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="red-btn"
-                                                    onclick="return confirm('Are you sure want to delete this facility?');">
-                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                                                     stroke="currentColor"
-                                                     stroke-width="2">
-                                                    <path d="M3 6h18"/>
-                                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
-                                                    <path d="M10 11v6"/>
-                                                    <path d="M14 11v6"/>
-                                                </svg>
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
+                                    {{ $booking->start_time }}
+                                </td>
+                                <td class="p-4 align-top">
+                                    {{ $booking->end_time }}
+                                </td>
+                                <td class="p-4 align-top">
+                                    {{ ucfirst($booking->status) }}
+                                </td>
+                                <td class="p-4 align-top">
+                                    @if($booking->is_override)
+                                        <span class="block mb-2 text-yellow-800">Override By Admin</span>
+                                        <p>{{ $booking->override_reason }}</p>
+                                    @else
+                                        <span class="text-xs text-gray-500 italic">No Info</span>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -108,18 +112,19 @@
                     <nav
                         class="flex items-center justify-between gap-4 flex-wrap md:flex-nowrap p-4 bg-gray-50 border-t border-gray-200"
                         aria-label="Table navigation">
-                        <span class="text-sm text-gray-600 w-full md:w-auto text-center md:text-left">
+                        <span
+                            class="text-sm text-gray-600 w-full md:w-auto text-center md:text-left">
                             Showing
                             <span class="font-semibold text-gray-900">
-                                {{ $facilities->firstItem() }}–{{ $facilities->lastItem() }}
+                                {{ $bookings->firstItem() }}–{{ $bookings->lastItem() }}
                             </span>
                             of
                             <span class="font-semibold text-gray-900">
-                                {{ $facilities->total() }}
+                                {{ $bookings->total() }}
                             </span>
                         </span>
                         <div class="mx-auto md:mx-0">
-                            {{ $facilities->links() }}
+                            {{ $bookings->links() }}
                         </div>
                     </nav>
                 </div>

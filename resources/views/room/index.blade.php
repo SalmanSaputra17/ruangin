@@ -67,7 +67,7 @@
                             <th scope="col" class="p-4">
                                 Status
                             </th>
-                            <th scope="col" class="p-4">
+                            <th scope="col" class="w-4 sm:w-8 p-4">
                                 Action
                             </th>
                         </tr>
@@ -92,8 +92,9 @@
                                     {{ $room->is_active ? 'Active' : 'Inactive' }}
                                 </td>
                                 <td class="p-4 align-top">
-                                    <div class="inline-flex gap-2">
-                                        <a href="{{ route('rooms.facilities.index', $room) }}" class="indigo-btn">
+                                    <div class="flex flex-col gap-2">
+                                        <a href="{{ route('rooms.facilities.index', $room) }}"
+                                           class="w-full indigo-btn">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                                                  stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -101,7 +102,18 @@
                                             </svg>
                                             Facilities
                                         </a>
-                                        <a href="{{ route('rooms.edit', $room) }}" class="yellow-btn">
+                                        {{--                                        <a href="{{ route('rooms.bookings.create', $room) }}"--}}
+                                        {{--                                           class="w-full emerald-btn">--}}
+                                        {{--                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"--}}
+                                        {{--                                                 stroke="currentColor" stroke-width="2">--}}
+                                        {{--                                                <path stroke-linecap="round" stroke-linejoin="round"--}}
+                                        {{--                                                      d="M8 7V3m8 4V3M3 11h18"/>--}}
+                                        {{--                                                <path stroke-linecap="round" stroke-linejoin="round"--}}
+                                        {{--                                                      d="M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"/>--}}
+                                        {{--                                            </svg>--}}
+                                        {{--                                            Book--}}
+                                        {{--                                        </a>--}}
+                                        <a href="{{ route('rooms.edit', $room) }}" class="w-full yellow-btn">
                                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                  stroke-width="2">
                                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -112,7 +124,7 @@
                                         <form method="post" action="{{ route('rooms.destroy', $room) }}">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" class="red-btn"
+                                            <button type="submit" class="w-full red-btn"
                                                     onclick="return confirm('Are you sure want to delete this room?');">
                                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                                                      stroke="currentColor"
