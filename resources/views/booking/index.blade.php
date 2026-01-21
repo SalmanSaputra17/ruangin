@@ -66,7 +66,7 @@
                                 </td>
                                 <td class="p-4 align-top">
                                     <span class="block mb-2 font-extrabold">{{ $booking->title }}</span>
-                                    <p>{{ Str::limit($booking->description, 75) }}</p>
+                                    <p>{{ Str::limit($booking->description, 50) }}</p>
                                 </td>
                                 <td class="p-4 align-top">
                                     {{ $booking->start_time }}
