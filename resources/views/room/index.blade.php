@@ -94,16 +94,6 @@
                     <nav
                         class="flex items-center justify-between gap-4 flex-wrap md:flex-nowrap p-4 bg-gray-50 border-t border-gray-200"
                         aria-label="Table navigation">
-                        <span class="text-sm text-gray-600 w-full md:w-auto text-center md:text-left">
-                            Showing
-                            <span class="font-semibold text-gray-900">
-                                {{ $rooms->firstItem() }}–{{ $rooms->lastItem() }}
-                            </span>
-                            of
-                            <span class="font-semibold text-gray-900">
-                                {{ $rooms->total() }}
-                            </span>
-                        </span>
                         <div class="mx-auto md:mx-0">
                             {{ $rooms->links() }}
                         </div>
