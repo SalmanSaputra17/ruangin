@@ -18,6 +18,14 @@
     @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-red-800 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:text-red-900 transition ease-in-out duration-150;
 }
 
+.solid-red-btn {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-[#F53003] text-white text-sm font-medium tracking-widest rounded-lg shadow-sm hover:bg-red-600 transition ease-in-out duration-150;
+}
+
+.solid-white-btn {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 border border-[#19140035] text-sm font-medium tracking-widest rounded-lg hover:bg-[#dbdbd7] transition ease-in-out duration-150;
+}
+
 .indigo-btn {
     @apply inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 hover:text-indigo-800 transition ease-in-out duration-150;
 }
