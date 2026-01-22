@@ -1,3 +1,4 @@
+@php use App\Support\Constant; @endphp
 {{-- STAT CARDS --}}
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
     <x-dashboard.stat title="Total Rooms" :value="$stats['rooms']"/>
@@ -31,8 +32,9 @@
                 <td>{{ $booking->user->name }}</td>
                 <td>
                     <span class="px-2 py-1 text-xs rounded-full
-                        @if($booking->status === 'approved') bg-green-100 text-green-700
-                        @elseif($booking->status === 'pending') bg-yellow-100 text-yellow-700
+                        @if($booking->status === Constant::BOOKING_APPROVED) bg-green-100 text-green-700
+                        @elseif($booking->status === Constant::BOOKING_REJECTED) bg-red-100 text-red-700
+                        @elseif($booking->status === Constant::BOOKING_PENDING) bg-yellow-100 text-yellow-700
                         @else bg-gray-200 text-gray-600 @endif">
                         {{ ucfirst($booking->status) }}
                     </span>
