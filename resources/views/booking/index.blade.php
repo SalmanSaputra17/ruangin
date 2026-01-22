@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Str; @endphp
+@php use App\Support\Constant;use Illuminate\Support\Str; @endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -35,6 +35,11 @@
                             <th scope="col" class="p-4">
                                 No.
                             </th>
+                            @if(auth()->user()->role === Constant::ROLE_ADMIN)
+                                <th scope="col" class="p-4">
+                                    User
+                                </th>
+                            @endif
                             <th scope="col" class="p-4">
                                 Room
                             </th>
@@ -42,10 +47,7 @@
                                 Title
                             </th>
                             <th scope="col" class="p-4">
-                                Start Time
-                            </th>
-                            <th scope="col" class="p-4">
-                                End Time
+                                Datetime
                             </th>
                             <th scope="col" class="p-4">
                                 Status
@@ -61,6 +63,11 @@
                                 <td class="p-4 align-top">
                                     {{ $loop->iteration }}
                                 </td>
+                                @if(auth()->user()->role === Constant::ROLE_ADMIN)
+                                    <td class="p-4 align-top">
+                                        {{ $booking->user->name }}
+                                    </td>
+                                @endif
                                 <td class="p-4 align-top">
                                     {{ $booking->room->name }}
                                 </td>
@@ -69,10 +76,7 @@
                                     <p>{{ Str::limit($booking->description, 50) }}</p>
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ $booking->start_time }}
-                                </td>
-                                <td class="p-4 align-top">
-                                    {{ $booking->end_time }}
+                                    {{ $booking->start_time->format('d M Y H:i') }} - {{ $booking->end_time->format('d M Y H:i') }}
                                 </td>
                                 <td class="p-4 align-top">
                                     {{ ucfirst($booking->status) }}

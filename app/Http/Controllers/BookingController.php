@@ -23,13 +23,15 @@ class BookingController extends Controller
      */
     public function index(Request $request): Factory|View
     {
-        $query = Booking::query();
+        $query = Booking::with(['room', 'user'])->visibleFor($request->user());
 
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $bookings = $query->paginate(10);
+        $query->orderByDesc('start_time');
+
+        $bookings = $query->paginate(10)->withQueryString();
 
         return view('booking.index', compact('bookings'));
     }

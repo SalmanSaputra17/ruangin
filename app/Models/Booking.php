@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Constant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -59,5 +60,19 @@ class Booking extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    /**
+     * @param $query
+     * @param $user
+     * @return mixed
+     */
+    public function scopeVisibleFor($query, $user)
+    {
+        if ($user->role === Constant::ROLE_USER) {
+            return $query->where('user_id', $user->id);
+        }
+
+        return $query;
     }
 }
