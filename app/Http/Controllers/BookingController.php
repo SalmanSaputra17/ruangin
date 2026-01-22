@@ -66,7 +66,7 @@ class BookingController extends Controller
                 $isOverride = (bool) $request->is_override;
 
                 // Validate office hour
-                $officeHourService->validate($start, $end, $isOverride, $user->role === 'admin');
+                $officeHourService->validate($start, $end, $isOverride, $user->role === Constant::ROLE_ADMIN);
 
                 // Validate booking conflict
                 $bookingAvailabilityService->ensureAvailability($room, $start, $end);
