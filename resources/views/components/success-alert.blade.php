@@ -1,4 +1,4 @@
-<div id="success-alert" class="flex sm:items-center p-4 my-6 text-sm text-[#5DE7B3] rounded-lg bg-[#002D21]"
+<div id="success-alert" class="flex sm:items-center p-4 my-6 rounded-lg bg-emerald-50 text-sm text-emerald-700"
      role="alert">
     <svg class="w-4 h-4 shrink-0 mt-0.5 md:mt-0" aria-hidden="true"
          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
