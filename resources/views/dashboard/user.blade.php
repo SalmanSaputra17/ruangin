@@ -1,3 +1,4 @@
+@php use App\Support\Constant; @endphp
 {{-- QUICK ACTION --}}
 <div class="flex justify-between items-center">
     <h3 class="text-lg font-semibold text-gray-800">
@@ -24,8 +25,9 @@
                     </p>
                 </div>
                 <span class="px-2 text-sm font-bold uppercase
-                    @if($booking->status === 'approved') text-green-700
-                    @elseif($booking->status === 'pending')text-yellow-700
+                    @if($booking->status === Constant::BOOKING_APPROVED) text-green-700
+                    @elseif($booking->status === Constant::BOOKING_REJECTED) text-red-700
+                    @elseif($booking->status === Constant::BOOKING_PENDING) text-yellow-700
                     @else text-gray-600 @endif">
                     {{ ucfirst($booking->status) }}
                 </span>
@@ -44,12 +46,21 @@
 
     <ul class="space-y-3">
         @forelse($upcomingBookings as $booking)
-            <li class="p-3 rounded-lg bg-gray-50">
-                <p class="font-medium">{{ $booking->title }}</p>
-                <p class="text-sm text-gray-500">
-                    {{ $booking->room->name }} •
-                    {{ $booking->start_time->format('d M Y H:i') }}
-                </p>
+            <li class="p-3 rounded-lg bg-gray-50 flex justify-between">
+                <div>
+                    <p class="font-medium">{{ $booking->title }}</p>
+                    <p class="text-sm text-gray-500">
+                        {{ $booking->room->name }} •
+                        {{ $booking->start_time->format('d M Y H:i') }}
+                    </p>
+                </div>
+                <span class="px-2 text-sm font-bold uppercase
+                    @if($booking->status === Constant::BOOKING_APPROVED) text-green-700
+                    @elseif($booking->status === Constant::BOOKING_REJECTED) text-red-700
+                    @elseif($booking->status === Constant::BOOKING_PENDING) text-yellow-700
+                    @else text-gray-600 @endif">
+                    {{ ucfirst($booking->status) }}
+                </span>
             </li>
         @empty
             <p class="text-gray-500 text-sm">
