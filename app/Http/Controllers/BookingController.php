@@ -41,7 +41,7 @@ class BookingController extends Controller
      */
     public function create(): Factory|View
     {
-        $rooms = Room::orderBy('name')->get();
+        $rooms = Room::orderBy('name')->where('is_active', true)->get();
 
         return view('booking.create', compact('rooms'));
     }
