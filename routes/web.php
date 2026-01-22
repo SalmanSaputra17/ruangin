@@ -22,6 +22,10 @@ Route::middleware('auth')->group(function () {
 
     // Booking Routes
     Route::resource('bookings', BookingController::class)->except('show', 'edit', 'update', 'destroy');
+    Route::middleware('role:admin')->group(function () {
+        Route::patch('/bookings/{booking}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
+        Route::patch('/bookings/{booking}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
+    });
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

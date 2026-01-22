@@ -30,6 +30,15 @@ class BookingPolicy
      * @param \App\Models\User $user
      * @return bool
      */
+    public function reject(User $user): bool
+    {
+        return $user->role === Constant::ROLE_ADMIN;
+    }
+
+    /**
+     * @param \App\Models\User $user
+     * @return bool
+     */
     public function overrideOfficeHours(User $user): bool
     {
         return $user->role === Constant::ROLE_ADMIN;

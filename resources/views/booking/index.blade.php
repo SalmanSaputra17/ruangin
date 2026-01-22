@@ -55,6 +55,11 @@
                             <th scope="col" class="p-4">
                                 Information
                             </th>
+                            @if(auth()->user()->role === Constant::ROLE_ADMIN)
+                                <th scope="col" class="p-4">
+                                    Action
+                                </th>
+                            @endif
                         </tr>
                         </thead>
                         <tbody>
@@ -76,19 +81,76 @@
                                     <p>{{ Str::limit($booking->description, 50) }}</p>
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ $booking->start_time->format('d M Y H:i') }} - {{ $booking->end_time->format('d M Y H:i') }}
+                                    {{ $booking->start_time->format('d M Y H:i') }}
+                                    - {{ $booking->end_time->format('d M Y H:i') }}
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ ucfirst($booking->status) }}
+                                    <span class="text-sm font-bold uppercase
+                                        @if($booking->status === Constant::BOOKING_APPROVED) text-green-700
+                                        @elseif($booking->status === Constant::BOOKING_REJECTED) text-red-700
+                                        @elseif($booking->status === Constant::BOOKING_PENDING) text-yellow-700
+                                        @else text-gray-600 @endif">
+                                        {{ ucfirst($booking->status) }}
+                                    </span>
                                 </td>
                                 <td class="p-4 align-top">
                                     @if($booking->is_override)
-                                        <span class="block mb-2 text-yellow-800">Override By Admin</span>
-                                        <p>{{ $booking->override_reason }}</p>
+                                        <p class="text-xs">
+                                            <span class="block font-extrabold">Override By:</span>
+                                            {{ $booking->overrideBy ? $booking->overrideBy->name : '-' }}
+                                            <span class="block mt-1 font-extrabold">Override At:</span>
+                                            {{ $booking->override_at ?: '-' }}
+                                            <span class="block mt-1 font-extrabold">Reason:</span>
+                                            {{ $booking->override_reason ?: '-' }}
+                                        </p>
+                                    @elseif($booking->status == Constant::BOOKING_PENDING)
+                                        <p class="text-xs">Waiting for Admin Approval.</p>
+                                    @elseif($booking->status == Constant::BOOKING_APPROVED)
+                                        <p class="text-xs">
+                                            <span class="block font-extrabold">Approved By:</span>
+                                            {{ $booking->approvedBy ? $booking->approvedBy->name : '-' }}
+                                            <span class="block mt-1 font-extrabold">Approved At:</span>
+                                            {{ $booking->approved_at ?: '-' }}
+                                        </p>
+                                    @elseif($booking->status == Constant::BOOKING_REJECTED)
+                                        <p class="text-xs">
+                                            <span class="block font-extrabold">Rejected By:</span>
+                                            {{ $booking->rejectedBy ? $booking->rejectedBy->name : '-' }}
+                                            <span class="block mt-1 font-extrabold">Rejected At:</span>
+                                            {{ $booking->rejected_at ?: '-' }}
+                                        </p>
                                     @else
                                         <span class="text-xs text-gray-500 italic">No Info</span>
                                     @endif
                                 </td>
+                                @if(auth()->user()->role === Constant::ROLE_ADMIN)
+                                    <td class="p-4 align-top">
+                                        @if($booking->status === Constant::BOOKING_PENDING)
+                                            <div class="flex flex-col gap-2">
+                                                <form action="{{ route('bookings.approve', $booking) }}" method="POST"
+                                                      class="block">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="w-full emerald-btn"
+                                                            onclick="return confirm('Are you sure you want to approve this booking?');">
+                                                        Approve
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('bookings.reject', $booking) }}" method="POST"
+                                                      class="block">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="w-full red-btn"
+                                                            onclick="return confirm('Are you sure you want to reject this booking?');">
+                                                        Reject
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <span class="text-xs text-gray-500 italic">No Action</span>
+                                        @endif
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>

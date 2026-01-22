@@ -87,6 +87,8 @@ class BookingController extends Controller
                     'description'     => $request->description,
                     'status'          => $user->role === Constant::ROLE_ADMIN ? 'approved' : 'pending',
                     'is_override'     => $isOverride,
+                    'override_at'     => now(),
+                    'override_by'     => $user->id,
                     'override_reason' => $request->override_reason,
                     'approved_by'     => $user->role === Constant::ROLE_ADMIN ? $user->id : null,
                 ]);
@@ -96,5 +98,49 @@ class BookingController extends Controller
         }
 
         return redirect()->route('bookings.index')->with('success', 'Booking successfully created.');
+    }
+
+    /**
+     * @param \App\Models\Booking $booking
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function approve(Booking $booking): RedirectResponse
+    {
+        $this->authorize('approve', $booking);
+
+        if ($booking->status !== Constant::BOOKING_PENDING) {
+            return back()->withErrors('Booking already processed.');
+        }
+
+        $booking->update([
+            'status'      => 'approved',
+            'approved_at' => now(),
+            'approved_by' => auth()->id(),
+        ]);
+
+        return back()->with('success', 'Booking has been approved successfully.');
+    }
+
+    /**
+     * @param \App\Models\Booking $booking
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function reject(Booking $booking): RedirectResponse
+    {
+        $this->authorize('reject', $booking);
+
+        if ($booking->status !== Constant::BOOKING_PENDING) {
+            return back()->withErrors('Booking already processed.');
+        }
+
+        $booking->update([
+            'status'      => 'rejected',
+            'rejected_at' => now(),
+            'rejected_by' => auth()->id(),
+        ]);
+
+        return back()->with('success', 'Booking has been rejected successfully.');
     }
 }

@@ -26,8 +26,14 @@ class Booking extends Model
         'end_time',
         'status',
         'is_override',
+        'override_at',
+        'override_by',
         'override_reason',
+        'approved_at',
         'approved_by',
+        'rejected_at',
+        'rejected_by',
+        'rejected_reason',
     ];
 
     /**
@@ -43,6 +49,9 @@ class Booking extends Model
     protected $casts = [
         'start_time'  => 'datetime',
         'end_time'    => 'datetime',
+        'override_at' => 'datetime',
+        'approved_at' => 'datetime',
+        'rejected_at' => 'datetime',
         'is_override' => 'boolean',
     ];
 
@@ -52,6 +61,30 @@ class Booking extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function overrideBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'override_by');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rejectedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rejected_by');
     }
 
     /**
