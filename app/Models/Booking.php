@@ -37,6 +37,15 @@ class Booking extends Model
     ];
 
     /**
+     * @var string[]
+     */
+    protected $casts = [
+        'start_time'  => 'datetime',
+        'end_time'    => 'datetime',
+        'is_override' => 'boolean',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
