@@ -69,7 +69,11 @@
                                     {{ $room->capacity }} People
                                 </td>
                                 <td class="p-4 align-top">
-                                    {{ $room->is_active ? 'Active' : 'Inactive' }}
+                                    @if($room->is_active)
+                                        <span class="text-sm font-bold uppercase text-green-700">Active</span>
+                                    @else
+                                        <span class="text-sm font-bold uppercase text-red-700">Inactive</span>
+                                    @endif
                                 </td>
                                 <td class="p-4 align-top">
                                     <div class="flex flex-col gap-2">
