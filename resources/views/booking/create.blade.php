@@ -29,9 +29,7 @@
                                         class="block w-full mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                     <option value="">Select room ...</option>
                                     @foreach ($rooms as $room)
-                                        <option value="{{ $room->id }}"
-                                            @selected(in_array($room->id, old('room_id', $selectedRooms ?? [])))
-                                        >
+                                        <option value="{{ $room->id }}" @selected($room->id == old('room_id'))>
                                             {{ $room->name }}
                                         </option>
                                     @endforeach
