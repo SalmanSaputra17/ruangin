@@ -78,7 +78,7 @@ class BookingController extends Controller
                     return back()->with('error', 'Override reason is mandatory.')->withInput();
                 }
 
-                Booking::create([
+                return Booking::create([
                     'room_id'         => $room->id,
                     'user_id'         => $user->id,
                     'start_time'      => $start,
