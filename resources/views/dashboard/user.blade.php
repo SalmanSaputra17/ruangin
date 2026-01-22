@@ -23,10 +23,10 @@
                         {{ $booking->start_time->format('H:i') }} - {{ $booking->end_time->format('H:i') }}
                     </p>
                 </div>
-                <span class="text-xs px-2 py-1 rounded-full
-                    @if($booking->status === 'approved') bg-green-100 text-green-700
-                    @elseif($booking->status === 'pending') bg-yellow-100 text-yellow-700
-                    @else bg-gray-200 text-gray-600 @endif">
+                <span class="px-2 text-sm font-bold uppercase
+                    @if($booking->status === 'approved') text-green-700
+                    @elseif($booking->status === 'pending')text-yellow-700
+                    @else text-gray-600 @endif">
                     {{ ucfirst($booking->status) }}
                 </span>
             </li>
