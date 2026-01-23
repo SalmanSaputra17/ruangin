@@ -84,6 +84,6 @@ class RoomController extends Controller
     {
         $room->delete();
 
-        return redirect()->route('rooms.index')->with('success', 'Room updated successfully.');
+        return redirect()->route('rooms.index')->with('success', 'Room deleted successfully.');
     }
 }
