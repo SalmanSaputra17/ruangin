@@ -90,6 +90,7 @@ class BookingController extends Controller
                     'override_at'     => now(),
                     'override_by'     => $user->id,
                     'override_reason' => $request->override_reason,
+                    'approved_at'     => $user->role === Constant::ROLE_ADMIN ? now() : null,
                     'approved_by'     => $user->role === Constant::ROLE_ADMIN ? $user->id : null,
                 ]);
             });
