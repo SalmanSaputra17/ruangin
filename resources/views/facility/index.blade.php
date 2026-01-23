@@ -61,7 +61,7 @@
                                 <td class="p-4 align-top">
                                     <div class="inline-flex gap-2">
                                         <x-edit-button :href="route('facilities.edit', $facility)">Edit</x-edit-button>
-                                        <x-delete-button :href="route('facilities.destroy', $facility)">Delete</x-delete-button>
+                                        <x-delete-button :action="route('facilities.destroy', $facility)">Delete</x-delete-button>
                                     </div>
                                 </td>
                             </tr>

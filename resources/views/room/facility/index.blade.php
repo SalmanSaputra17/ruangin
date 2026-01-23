@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="p-4 align-top">
                                     <div class="inline-flex gap-2">
-                                        <x-delete-button :href="route('rooms.facilities.destroy', [$room, $facility])">
+                                        <x-delete-button :action="route('rooms.facilities.destroy', [$room, $facility])">
                                             Delete
                                         </x-delete-button>
                                     </div>

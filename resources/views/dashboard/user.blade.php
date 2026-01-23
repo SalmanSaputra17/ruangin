@@ -5,7 +5,7 @@
         My Booking Today
     </h3>
 
-    <a href="{{ route('rooms.index') }}" class="primary-btn">
+    <a href="{{ route('bookings.create') }}" class="primary-btn">
         Book a Room
     </a>
 </div>

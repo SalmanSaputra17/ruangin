@@ -29,7 +29,7 @@ class BookingController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $query->orderByDesc('start_time');
+        $query->orderBy('start_time', 'asc');
 
         $bookings = $query->paginate(10)->withQueryString();
 

@@ -87,7 +87,7 @@
                                             Facilities
                                         </a>
                                         <x-edit-button :href="route('rooms.edit', $room)">Edit</x-edit-button>
-                                        <x-delete-button :href="route('rooms.destroy', $room)">Delete
+                                        <x-delete-button :action="route('rooms.destroy', $room)">Delete
                                         </x-delete-button>
                                     </div>
                                 </td>

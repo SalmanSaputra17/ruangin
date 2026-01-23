@@ -43,11 +43,20 @@
                       rows="5">{{ old('description', isset($room) ? $room->description : '') }}</textarea>
             <x-input-error class="mt-2" :messages="$errors->get('description')"/>
         </div>
-        <div>
-            <x-text-input id="is_active" name="is_active" type="checkbox" value="1"
-                          checked="{{ old('is_active', isset($room) ? $room->is_active : '') }}"
-                          autocomplete="is_active"/>
-            <x-input-label for="is_active" :value="__('Room Active')" class="inline-block"/>
+        <div class="flex items-start gap-3">
+            <input type="checkbox"
+                   name="is_active"
+                   value="1"
+                   {{ old('is_active', isset($room) ? $room->is_active : false) ? 'checked' : '' }}
+                   class="mt-1 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+            <div>
+                <p class="text-sm font-medium text-gray-800">
+                    Room Availability
+                </p>
+                <p class="text-xs text-gray-500">
+                    Determine if the room still available or not.
+                </p>
+            </div>
             <x-input-error class="mt-2" :messages="$errors->get('is_active')"/>
         </div>
         <div class="flex items-center gap-4">
