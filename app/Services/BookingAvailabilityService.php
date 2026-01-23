@@ -17,7 +17,7 @@ class BookingAvailabilityService
      */
     public function ensureAvailability(Room $room, Carbon $start, Carbon $end): void
     {
-        $conflict = $room->bookings()->where('status', '!=', 'cancelled')->where(function ($query) use ($start, $end) {
+        $conflict = $room->bookings()->where('status', '!=', 'rejected')->where(function ($query) use ($start, $end) {
             $query->where('start_time', '<', $end)->where('end_time', '>', $start);
         })->exists();
 
